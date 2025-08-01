@@ -1,0 +1,21 @@
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable
+plugins: 
+ - rubocop-rails
+ - rubocop-rspec
+Metrics/BlockLength:
+  AllowedMethods: ['draw']
+Style/FrozenStringLiteralComment:
+  Enabled: false
+RSpec/ScatteredSetup:
+  Enabled: false
+RSpec/EmptyExampleGroup:
+  Enabled: false
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+RSpec/VariableName:
+  Exclude: 
+  - 'spec/**/*'
+Naming/VariableNumber:
+  Enabled: false
