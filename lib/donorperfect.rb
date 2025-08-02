@@ -25,6 +25,11 @@ module Donorperfect
       create_objects(Donorperfect::Donor, results)
     end
 
+    def get_all_donors(filters = [], page = nil)
+      results = @connector.get_all_donors(filters, page)
+      create_objects(Donorperfect::Donor, results)
+    end
+
     private
 
     def create_object(klass, values)
