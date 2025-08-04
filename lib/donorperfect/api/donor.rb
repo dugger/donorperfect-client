@@ -33,6 +33,7 @@ module Donorperfect
       :spfname,
       :splname,
       :birthdate,
+      :citizenship,
       :gender
     )
 
