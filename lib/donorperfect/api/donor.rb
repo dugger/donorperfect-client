@@ -34,7 +34,8 @@ module Donorperfect
       :splname,
       :birthdate,
       :citizenship,
-      :gender
+      :gender,
+      :primary_contact
     )
 
     def update_dp
