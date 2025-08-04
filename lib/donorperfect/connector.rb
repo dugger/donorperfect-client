@@ -39,7 +39,8 @@ module Donorperfect
       'dpudf.birthdate',
       'dpudf.gender',
       'dpudf.citizenship',
-      'dpudf.primary_contact'
+      'dpudf.primary_contact',
+      'dpudf.kinection_id'
     ].freeze
 
     def initialize(apikey)
