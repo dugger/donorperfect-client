@@ -36,7 +36,8 @@ module Donorperfect
       :citizenship,
       :gender,
       :primary_contact,
-      :kinection_id
+      :kinection_id,
+      :last_served_lead
     )
 
     def update_dp
