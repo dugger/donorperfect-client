@@ -41,7 +41,26 @@ module Donorperfect
       'dpudf.citizenship',
       'dpudf.primary_contact',
       'dpudf.kinection_id',
-      'dpudf.last_served_lead'
+      'dpudf.last_served_lead',
+      'dpudf.on_the_level',
+      'dpudf.biweek_update',
+      'dpudf.skill_flooring',
+      'dpudf.skill_framing',
+      'dpudf.skill_masonry',
+      'dpudf.skill_plumbing',
+      'dpudf.skill_roofing',
+      'dpudf.skill_drywall_finish',
+      'dpudf.skill_hvac',
+      'dpudf.skill_drywall_hang',
+      'dpudf.skill_painting',
+      'dpudf.skill_electrical',
+      'dpudf.emergency_contact',
+      'dpudf.em_contact_relat',
+      'dpudf.em_contact_phone',
+      'dpudf.em_contact_2phone',
+      'dpudf.bthindirect',
+      'dpudf.nobth',
+      'dpudf.bth_pref'
     ].freeze
 
     def initialize(apikey)

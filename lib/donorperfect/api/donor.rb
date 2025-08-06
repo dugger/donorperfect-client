@@ -37,7 +37,26 @@ module Donorperfect
       :gender,
       :primary_contact,
       :kinection_id,
-      :last_served_lead
+      :last_served_lead,
+      :on_the_level,
+      :biweek_update,
+      :skill_flooring,
+      :skill_framing,
+      :skill_masonry,
+      :skill_plumbing,
+      :skill_roofing,
+      :skill_drywall_finish,
+      :skill_hvac,
+      :skill_drywall_hang,
+      :skill_painting,
+      :skill_electrical,
+      :emergency_contact,
+      :em_contact_relat,
+      :em_contact_phone,
+      :em_contact_2phone,
+      :bthindirect,
+      :nobth,
+      :bth_pref
     )
 
     def update_dp

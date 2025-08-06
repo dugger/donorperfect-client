@@ -17,6 +17,8 @@ module Donorperfect
 
     def get_donor(donor_id)
       result = @connector.get_donor(donor_id)
+      return nil if result.nil?
+
       create_object(Donorperfect::Donor, result)
     end
 
