@@ -50,13 +50,19 @@ module Donorperfect
       :skill_drywall_hang,
       :skill_painting,
       :skill_electrical,
+      :skill_cabinet_count,
+      :skill_finish_carpent,
+      :skill_handyman,
+      :skill_chainsaw,
+      :skill_skidsteer,
       :emergency_contact,
       :em_contact_relat,
       :em_contact_phone,
       :em_contact_2phone,
       :bthindirect,
       :nobth,
-      :bth_pref
+      :bth_pref,
+      :bth
     )
 
     def update_dp
