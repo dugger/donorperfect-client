@@ -86,6 +86,7 @@ module Donorperfect
       params['@char_value'] = value if udf_type == 'C'
       params['@date_value'] = value if udf_type == 'D'
       params['@number_value'] = value if udf_type == 'N'
+      params['@user_id'] = client.name
 
       response = client.connector.get(action, params)
       response.xpath('//field')&.first&.attribute('value')&.value == donor_id
