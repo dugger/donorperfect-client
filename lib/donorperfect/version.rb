@@ -5,7 +5,7 @@ module Donorperfect
     class Version
       MAJOR = 0
       MINOR = 2
-      PATCH = 8
+      PATCH = 9
       STRING = "#{MAJOR}.#{MINOR}.#{PATCH}".freeze
 
       class << self
