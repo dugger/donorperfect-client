@@ -18,7 +18,6 @@ module Donorperfect
       :business_phone,
       :fax_phone,
       :narrative,
-      :modified_by,
       :suffix,
       :title,
       :salutation,
@@ -120,7 +119,6 @@ module Donorperfect
       nomail_reason
       narrative
       donor_rcpt_type
-      modified_by
     ].freeze
 
     UPDATE_DONOR_UDF_KEYS = %w[

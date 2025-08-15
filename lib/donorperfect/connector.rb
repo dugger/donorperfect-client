@@ -33,7 +33,6 @@ module Donorperfect
       'dp.nomail',
       'dp.nomail_reason',
       'dp.donor_rcpt_type',
-      'dp.modified_by',
       'dpudf.retired',
       'dpudf.spfname',
       'dpudf.splname',
