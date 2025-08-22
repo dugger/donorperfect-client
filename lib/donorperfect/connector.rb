@@ -44,6 +44,7 @@ module Donorperfect
       'dpudf.kin_modified_date',
       'dpudf.kin_last_logged',
       'dpudf.last_served_lead',
+      'dpudf.lead',
       'dpudf.on_the_level',
       'dpudf.biweek_update',
       'dpudf.skill_flooring',

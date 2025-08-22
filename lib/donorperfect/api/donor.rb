@@ -40,6 +40,7 @@ module Donorperfect
       :kin_modified_date,
       :kin_last_logged,
       :last_served_lead,
+      :lead,
       :on_the_level,
       :biweek_update,
       :skill_flooring,
