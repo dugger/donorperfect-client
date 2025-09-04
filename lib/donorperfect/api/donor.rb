@@ -28,59 +28,21 @@ module Donorperfect
       :donor_type,
       :nomail,
       :nomail_reason,
-      :donor_rcpt_type,
-      :retired,
-      :spfname,
-      :splname,
-      :birthdate,
-      :citizenship,
-      :gender,
-      :primary_contact,
-      :kinection_id,
-      :kin_modified_date,
-      :kin_last_logged,
-      :last_served_lead,
-      :lead,
-      :on_the_level,
-      :biweek_update,
-      :skill_flooring,
-      :skill_framing,
-      :skill_masonry,
-      :skill_plumbing,
-      :skill_roofing,
-      :skill_drywall_finish,
-      :skill_hvac,
-      :skill_drywall_hang,
-      :skill_painting,
-      :skill_electrical,
-      :skill_cabinet_count,
-      :skill_finish_carpent,
-      :skill_handyman,
-      :skill_chainsaw,
-      :skill_skidsteer,
-      :emergency_contact,
-      :em_contact_relat,
-      :em_contact_phone,
-      :em_contact_2phone,
-      :bthindirect,
-      :nobth,
-      :bth_pref,
-      :bth,
-      :last,
-      :church,
-      :denomination,
-      :dietary_needs,
-      :driv_lic_exp_date,
-      :mds_drive_exp_date,
-      :driver_dr_app_exp,
-      :employer,
-      :ca_gender,
-      :licensed_trades,
-      :medical_training,
-      :occupation_kin,
-      :occupation_type,
-      :physical_limitations
+      :donor_rcpt_type
     )
+
+    def initialize(options)
+      # Create dynamic attr_accessors for dpudf fields if client is available
+      if options[:client] && options[:client].dpudf_field_names
+        dpudf_field_names = options[:client].dpudf_field_names.map(&:to_sym)
+
+        dpudf_field_names.each do |field_name|
+          self.class.attr_accessor(field_name) unless respond_to?("#{field_name}=")
+        end
+      end
+
+      super(options)
+    end
 
     def update_dp
       params = UPDATE_DONOR_KEYS.map { |param| ['@' + param, send(param)] }.to_h

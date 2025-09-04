@@ -2,9 +2,10 @@ module Donorperfect
   require 'json'
   # Connector class for DonorPerfect API
   class Connector
-    attr_accessor(:apikey, :web_services_url)
+    attr_accessor(:apikey, :web_services_url, :dpudf_fields)
+    attr_reader(:dpudf_field_names)
 
-    DEFAULT_DONOR_FIELDS = [
+    DEFAULT_DP_FIELDS = [
       'dp.donor_id',
       'dp.email',
       'dp.first_name',
@@ -32,63 +33,22 @@ module Donorperfect
       'dp.donor_type',
       'dp.nomail',
       'dp.nomail_reason',
-      'dp.donor_rcpt_type',
-      'dpudf.retired',
-      'dpudf.spfname',
-      'dpudf.splname',
-      'dpudf.birthdate',
-      'dpudf.gender',
-      'dpudf.citizenship',
-      'dpudf.primary_contact',
-      'dpudf.kinection_id',
-      'dpudf.kin_modified_date',
-      'dpudf.kin_last_logged',
-      'dpudf.last_served_lead',
-      'dpudf.lead',
-      'dpudf.on_the_level',
-      'dpudf.biweek_update',
-      'dpudf.skill_flooring',
-      'dpudf.skill_framing',
-      'dpudf.skill_masonry',
-      'dpudf.skill_plumbing',
-      'dpudf.skill_roofing',
-      'dpudf.skill_drywall_finish',
-      'dpudf.skill_hvac',
-      'dpudf.skill_drywall_hang',
-      'dpudf.skill_painting',
-      'dpudf.skill_electrical',
-      'dpudf.skill_cabinet_count',
-      'dpudf.skill_finish_carpent',
-      'dpudf.skill_handyman',
-      'dpudf.skill_chainsaw',
-      'dpudf.skill_skidsteer',
-      'dpudf.emergency_contact',
-      'dpudf.em_contact_relat',
-      'dpudf.em_contact_phone',
-      'dpudf.em_contact_2phone',
-      'dpudf.bth',
-      'dpudf.bthindirect',
-      'dpudf.nobth',
-      'dpudf.bth_pref',
-      'dpudf.last',
-      'dpudf.church',
-      'dpudf.denomination',
-      'dpudf.dietary_needs',
-      'dpudf.driv_lic_exp_date',
-      'dpudf.mds_drive_exp_date',
-      'dpudf.driver_dr_app_exp',
-      'dpudf.employer',
-      'dpudf.ca_gender',
-      'dpudf.licensed_trades',
-      'dpudf.medical_training',
-      'dpudf.occupation_kin',
-      'dpudf.occupation_type',
-      'dpudf.physical_limitations'
+      'dp.donor_rcpt_type'
     ].freeze
 
-    def initialize(apikey)
+    def initialize(apikey, dpudf_fields = [])
       @web_services_url = 'https://www.donorperfect.net/prod/xmlrequest.asp'
       @apikey = apikey
+
+      # Validate that dpudf fields don't overlap with dp fields
+      validate_field_names(dpudf_fields)
+
+      @dpudf_field_names = dpudf_fields
+      @dpudf_fields = dpudf_fields.map { |field| "dpudf.#{field}" }
+    end
+
+    def donor_fields
+      DEFAULT_DP_FIELDS + @dpudf_fields
     end
 
     def get(action, params = {})
@@ -115,7 +75,7 @@ module Donorperfect
     end
 
     def get_donor(donor_id)
-      query = "select #{DEFAULT_DONOR_FIELDS.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id where dp.donor_id = #{donor_id}"
+      query = "select #{donor_fields.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id where dp.donor_id = #{donor_id}"
       response = get(query)
       return nil if response.xpath('//record').empty?
 
@@ -123,7 +83,7 @@ module Donorperfect
     end
 
     def get_donors(donor_ids = [])
-      query = "select top 100 #{DEFAULT_DONOR_FIELDS.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id where dp.donor_id in (#{donor_ids.join(',')})"
+      query = "select top 100 #{donor_fields.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id where dp.donor_id in (#{donor_ids.join(',')})"
       response = get(query)
       return [] if response.xpath('//record').empty?
 
@@ -131,7 +91,7 @@ module Donorperfect
     end
 
     def get_all_donors(filters = [], page = nil)
-      base_query = "select #{DEFAULT_DONOR_FIELDS.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id"
+      base_query = "select #{donor_fields.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id"
       base_query += " where #{filters.join(' and ')}" if filters.any?
 
       if page.nil?
@@ -160,6 +120,20 @@ module Donorperfect
         hash[field_name] = field_value if field_name
       end
       hash
+    end
+
+    private
+
+    def validate_field_names(dpudf_fields)
+      # Extract field names from DEFAULT_DP_FIELDS (remove 'dp.' prefix)
+      dp_field_names = DEFAULT_DP_FIELDS.map { |field| field.gsub('dp.', '') }
+
+      # Check for overlapping field names
+      overlapping_fields = dpudf_fields & dp_field_names
+
+      unless overlapping_fields.empty?
+        raise ArgumentError, "DPUDF fields cannot overlap with DP fields. Conflicting fields: #{overlapping_fields.join(', ')}"
+      end
     end
   end
 end

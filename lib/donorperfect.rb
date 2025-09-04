@@ -8,11 +8,16 @@ require 'nokogiri'
 module Donorperfect
   # Client class for DonorPerfect API
   class Client
-    attr_accessor(:connector, :name)
+    attr_accessor(:connector, :name, :dpudf_fields)
 
-    def initialize(apikey, name)
-      @connector = Donorperfect::Connector.new(apikey)
+    def initialize(apikey, name, dpudf_fields = [])
+      @connector = Donorperfect::Connector.new(apikey, dpudf_fields)
       @name = name || 'API_Client'
+      @dpudf_fields = dpudf_fields
+    end
+
+    def dpudf_field_names
+      @connector.dpudf_field_names
     end
 
     def get_donor(donor_id)
