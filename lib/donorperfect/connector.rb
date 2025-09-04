@@ -69,7 +69,21 @@ module Donorperfect
       'dpudf.bth',
       'dpudf.bthindirect',
       'dpudf.nobth',
-      'dpudf.bth_pref'
+      'dpudf.bth_pref',
+      'dpudf.last',
+      'dpudf.church',
+      'dpudf.denomination',
+      'dpudf.dietary_needs',
+      'dpudf.driv_lic_exp_date',
+      'dpudf.mds_drive_exp_date',
+      'dpudf.driver_dr_app_exp',
+      'dpudf.employer',
+      'dpudf.ca_gender',
+      'dpudf.licensed_trades',
+      'dpudf.medical_training',
+      'dpudf.occupation_kin',
+      'dpudf.occupation_type',
+      'dpudf.physical_limitations'
     ].freeze
 
     def initialize(apikey)
@@ -137,12 +151,6 @@ module Donorperfect
 
       response.xpath('//record').map { |record| record_to_hash(record) }
     end
-
-    # Examples:
-    # get_all_donors() # Get first 500 donors (page 0)
-    # get_all_donors([], 0) # Get first page (0-499)
-    # get_all_donors([], 1) # Get second page (500-999)
-    # get_all_donors(["dpudf.LAST_SERVED_DATE > '2020-01-01'", "dp.email is not null"], 0) # Filtered first page
 
     def record_to_hash(record)
       hash = {}

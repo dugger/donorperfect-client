@@ -65,7 +65,21 @@ module Donorperfect
       :bthindirect,
       :nobth,
       :bth_pref,
-      :bth
+      :bth,
+      :last,
+      :church,
+      :denomination,
+      :dietary_needs,
+      :driv_lic_exp_date,
+      :mds_drive_exp_date,
+      :driver_dr_app_exp,
+      :employer,
+      :ca_gender,
+      :licensed_trades,
+      :medical_training,
+      :occupation_kin,
+      :occupation_type,
+      :physical_limitations
     )
 
     def update_dp

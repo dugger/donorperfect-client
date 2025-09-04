@@ -19,4 +19,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'nokogiri', '~> 1.10'
   spec.add_dependency 'rest-client', '~> 2.0'
+  spec.add_development_dependency 'irb'
+  spec.add_development_dependency 'rdoc'
 end
