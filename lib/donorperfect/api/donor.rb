@@ -28,6 +28,7 @@ module Donorperfect
       :donor_type,
       :nomail,
       :nomail_reason,
+      :no_email,
       :donor_rcpt_type
     )
 
@@ -97,6 +98,7 @@ module Donorperfect
       nomail_reason
       narrative
       donor_rcpt_type
+      no_email
     ].freeze
 
     UPDATE_DONOR_UDF_KEYS = %w[
