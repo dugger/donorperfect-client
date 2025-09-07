@@ -28,6 +28,11 @@ module Donorperfect
       create_object(Donorperfect::Donor, result)
     end
 
+    def get_donors_by_email(email)
+      results = @connector.get_donors_by_email(email)
+      create_objects(Donorperfect::Donor, results)
+    end
+
     def get_donors(donor_ids = [])
       results = @connector.get_donors(donor_ids)
       create_objects(Donorperfect::Donor, results)

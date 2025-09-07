@@ -2,10 +2,10 @@ module Donorperfect
   class DonorPerfectObject
     attr_accessor :client
 
-    def initialize(options)
+    def initialize(options = {})
       @client ||= options.delete(:client)
 
-      options.fetch(:values).each do |k, v|
+      options.fetch(:values, {}).each do |k, v|
         send(:"#{k}=", v) if respond_to?(:"#{k}=")
       end
     rescue NoMethodError

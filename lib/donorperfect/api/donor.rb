@@ -32,7 +32,7 @@ module Donorperfect
       :donor_rcpt_type
     )
 
-    def initialize(options)
+    def initialize(options = {})
       # Create dynamic attr_accessors for dpudf fields if client is available
       if options[:client] && options[:client].dpudf_field_names
         dpudf_field_names = options[:client].dpudf_field_names.map(&:to_sym)
@@ -49,8 +49,15 @@ module Donorperfect
       params = UPDATE_DONOR_KEYS.map { |param| ['@' + param, send(param)] }.to_h
       params.merge!({ '@user_id' => client.name })
       action = 'dp_savedonor'
-      response = client.connector.get(action, params)
-      response.xpath('//field')&.first&.attribute('value')&.value == '0'
+      response = client.connector.get(action, params).xpath('//field')&.first&.attribute('value')&.value
+      return true if response == '0'
+
+      if response&.to_i&.positive?
+        self.donor_id = response
+        return true
+      else
+        return false
+      end
     end
 
     def update_udf(udf_key, udf_type, value)

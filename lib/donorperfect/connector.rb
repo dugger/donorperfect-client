@@ -112,6 +112,14 @@ module Donorperfect
       response.xpath('//record').map { |record| record_to_hash(record) }
     end
 
+    def get_donors_by_email(email)
+      query = "select #{donor_fields.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id where dp.email = '#{email}'"
+      response = get(query)
+      return [] if response.xpath('//record').empty?
+
+      response.xpath('//record').map { |record| record_to_hash(record) }
+    end
+
     def get_codes(field_name)
       query = "select * from dpcodes where field_name = '#{field_name}'"
       response = get(query)
