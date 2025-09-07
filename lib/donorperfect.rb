@@ -2,6 +2,7 @@ require_relative 'donorperfect/connector'
 require_relative 'donorperfect/version'
 require_relative 'donorperfect/api/donor_perfect_object'
 require_relative 'donorperfect/api/donor'
+require_relative 'donorperfect/api/code'
 require 'rest-client'
 require 'nokogiri'
 
@@ -35,6 +36,11 @@ module Donorperfect
     def get_all_donors(filters = [], page = nil)
       results = @connector.get_all_donors(filters, page)
       create_objects(Donorperfect::Donor, results)
+    end
+
+    def get_codes(field_name)
+      results = @connector.get_codes(field_name)
+      create_objects(Donorperfect::Code, results)
     end
 
     private
