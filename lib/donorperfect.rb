@@ -43,6 +43,11 @@ module Donorperfect
       create_objects(Donorperfect::Code, results)
     end
 
+    def get_code(code, field_name)
+      result = @connector.get_code(code, field_name)
+      create_object(Donorperfect::Code, result)
+    end
+
     private
 
     def create_object(klass, values)

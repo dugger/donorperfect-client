@@ -120,6 +120,14 @@ module Donorperfect
       response.xpath('//record').map { |record| record_to_hash(record) }
     end
 
+    def get_code(code, field_name)
+      query = "select * from dpcodes where code = '#{code}' and field_name = '#{field_name}'"
+      response = get(query)
+      return nil if response.xpath('//record').empty?
+
+      record_to_hash(response.xpath('//record').first)
+    end
+
     def record_to_hash(record)
       hash = {}
       record.xpath('field').each do |field|
