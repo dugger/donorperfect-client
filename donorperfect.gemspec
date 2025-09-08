@@ -14,11 +14,11 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   spec.require_path  = 'lib'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.3.0'
+  spec.required_ruby_version = '>= 3.1.0'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
-  spec.add_dependency 'nokogiri', '~> 1.10'
-  spec.add_dependency 'rest-client', '~> 2.0'
+  spec.add_dependency 'nokogiri', '~> 1.18'
+  spec.add_dependency 'rest-client', '~> 2.1'
   spec.add_development_dependency 'irb'
   spec.add_development_dependency 'rdoc'
 end
