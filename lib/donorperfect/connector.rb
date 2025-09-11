@@ -66,7 +66,7 @@ module Donorperfect
         first = true
         url.query += '&params='
         params.each do |k, v|
-          v = "'#{v}'" if v != 'null'
+          v = v.nil? ? 'null' : "'#{v}'"
           url.query += "#{',' unless first}#{URI.encode_www_form({ k => v })}"
           first = false
         end

@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rest-client', '~> 2.1'
   spec.add_development_dependency 'irb'
   spec.add_development_dependency 'rdoc'
+  spec.add_development_dependency 'debug'
 end
