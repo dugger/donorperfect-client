@@ -46,7 +46,7 @@ module Donorperfect
     end
 
     def update_dp
-      params = UPDATE_DONOR_KEYS.map { |param| ['@' + param, ((send(param).nil? || send(param)&.empty?) ? nil : send(param))] }.to_h
+      params = UPDATE_DONOR_KEYS.map { |param| ['@' + param, ((send(param).nil? || send(param)&.to_s.empty?) ? nil : send(param))] }.to_h
       params.merge!({ '@user_id' => client.name })
       action = 'dp_savedonor'
       response = client.connector.get(action, params).xpath('//field')&.first&.attribute('value')&.value
