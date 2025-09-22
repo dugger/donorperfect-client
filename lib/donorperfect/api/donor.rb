@@ -61,7 +61,7 @@ module Donorperfect
     end
 
     def update_udf(udf_key, udf_type, value)
-      if value.nil? || value.empty?
+      if value.nil? || value.to_s.empty?
         action = "update dpudf set #{udf_key} = null where donor_id = #{donor_id}"
         params = {}
       else
