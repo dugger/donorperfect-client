@@ -28,7 +28,6 @@ module Donorperfect
       :donor_type,
       :nomail,
       :nomail_reason,
-      :no_email,
       :donor_rcpt_type
     )
 
@@ -66,7 +65,7 @@ module Donorperfect
         params = {}
       else
         action = 'dp_save_udf_xml'
-        params = UPDATE_DONOR_UDF_KEYS.map { |param| ['@' + param, nil] }.to_h
+        params = UPDATE_UDF_KEYS.map { |param| ['@' + param, nil] }.to_h
         params['@matching_id'] = donor_id
         params['@field_name'] = udf_key
         params['@data_type'] = udf_type # C- Character, D-Date, N- numeric
@@ -76,7 +75,7 @@ module Donorperfect
         params['@user_id'] = client.name
       end
       response = client.connector.get(action, params)
-      response.xpath('//field')&.first&.attribute('value')&.value == donor_id
+      return response.xpath('//field')&.first&.attribute('value')&.value == donor_id
     end
 
     UPDATE_DONOR_KEYS = %w[
@@ -110,7 +109,7 @@ module Donorperfect
       no_email
     ].freeze
 
-    UPDATE_DONOR_UDF_KEYS = %w[
+    UPDATE_UDF_KEYS = %w[
       matching_id
       field_name
       data_type

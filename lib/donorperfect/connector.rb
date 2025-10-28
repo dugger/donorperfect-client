@@ -2,8 +2,8 @@ module Donorperfect
   require 'json'
   # Connector class for DonorPerfect API
   class Connector
-    attr_accessor(:apikey, :web_services_url, :dpudf_fields)
-    attr_reader(:dpudf_field_names)
+    attr_accessor(:apikey, :web_services_url, :dpudf_fields, :other_udf_fields)
+    attr_reader(:dpudf_field_names, :other_udf_field_names)
 
     DEFAULT_DP_FIELDS = [
       'dp.donor_id',
@@ -36,19 +36,38 @@ module Donorperfect
       'dp.donor_rcpt_type'
     ].freeze
 
-    def initialize(apikey, dpudf_fields = [])
+    DEFAULT_OTHER_FIELDS = [
+      'o.other_id',
+      'o.donor_id',
+      'o.other_date',
+      'o.comments',
+      'o.created_by',
+      'o.created_date',
+      'o.modified_by',
+      'o.modified_date',
+      'o.import_id',
+      'o.wl_import_id'
+    ].freeze
+
+    def initialize(apikey, dpudf_fields = [], other_udf_fields = [])
       @web_services_url = 'https://www.donorperfect.net/prod/xmlrequest.asp'
       @apikey = apikey
 
       # Validate that dpudf fields don't overlap with dp fields
-      validate_field_names(dpudf_fields)
+      validate_field_names(dpudf_fields, other_udf_fields)
 
       @dpudf_field_names = dpudf_fields
       @dpudf_fields = dpudf_fields.map { |field| "dpudf.#{field}" }
+      @other_udf_field_names = other_udf_fields
+      @other_udf_fields = other_udf_fields.map { |field| "oudf.#{field}" }
     end
 
     def donor_fields
       DEFAULT_DP_FIELDS + @dpudf_fields
+    end
+
+    def other_fields
+      DEFAULT_OTHER_FIELDS + @other_udf_fields
     end
 
     def get(action, params = {})
@@ -146,17 +165,31 @@ module Donorperfect
       hash
     end
 
+    def get_other(other_id)
+      query = "select #{other_fields.join(',')} from dpotherinfo o join dpotherinfoudf oudf on o.other_id = oudf.other_id where o.other_id = #{other_id}"
+      response = get(query)
+      return nil if response.xpath('//record').empty?
+
+      record_to_hash(response.xpath('//record').first)
+    end
+
     private
 
-    def validate_field_names(dpudf_fields)
+    def validate_field_names(dpudf_fields, other_udf_fields = [])
       # Extract field names from DEFAULT_DP_FIELDS (remove 'dp.' prefix)
       dp_field_names = DEFAULT_DP_FIELDS.map { |field| field.gsub('dp.', '') }
+      other_field_names = DEFAULT_OTHER_FIELDS.map { |field| field.gsub('o.', '') }
 
-      # Check for overlapping field names
-      overlapping_fields = dpudf_fields & dp_field_names
+      # Check for overlapping field names between dpudf and dp fields
+      overlapping_with_dp = dpudf_fields & dp_field_names
 
-      unless overlapping_fields.empty?
-        raise ArgumentError, "DPUDF fields cannot overlap with DP fields. Conflicting fields: #{overlapping_fields.join(', ')}"
+      # Check for overlapping field names between dpudf and other fields
+      overlapping_with_other = other_udf_fields & other_field_names
+
+      conflicting_fields = overlapping_with_dp | overlapping_with_other
+
+      unless conflicting_fields.empty?
+        raise ArgumentError, "UDF fields cannot overlap with default fields. Conflicting fields: #{conflicting_fields.join(', ')}"
       end
     end
   end
