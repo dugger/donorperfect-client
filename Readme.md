@@ -83,7 +83,7 @@ The following standard DonorPerfect fields are always available on donor objects
 
 - `donor_id`, `email`, `first_name`, `middle_name`, `last_name`
 - `address`, `address2`, `city`, `state`, `country`, `zip`
-- `no_email`, `mobile_phone`, `home_phone`, `business_phone`, `fax_phone`
+- `mobile_phone`, `home_phone`, `business_phone`, `fax_phone`
 - `narrative`, `suffix`, `title`, `salutation`, `prof_title`, `opt_line`
 - `address_type`, `org_rec`, `donor_type`, `nomail`, `nomail_reason`, `donor_rcpt_type`
 

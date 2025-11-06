@@ -12,7 +12,6 @@ module Donorperfect
       :state,
       :country,
       :zip,
-      :no_email,
       :mobile_phone,
       :home_phone,
       :business_phone,
@@ -106,7 +105,6 @@ module Donorperfect
       nomail_reason
       narrative
       donor_rcpt_type
-      no_email
     ].freeze
 
     UPDATE_UDF_KEYS = %w[
