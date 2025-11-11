@@ -85,7 +85,7 @@ module Donorperfect
         first = true
         url.query += '&params='
         params.each do |k, v|
-          v = v.nil? ? 'null' : "'#{v}'"
+          v = v.nil? ? 'null' : "'#{escape_sql_string(v)}'"
           url.query += "#{',' unless first}#{URI.encode_www_form({ k => v })}"
           first = false
         end
@@ -132,7 +132,8 @@ module Donorperfect
     end
 
     def get_donors_by_email(email)
-      query = "select #{donor_fields.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id where dp.email = '#{email}'"
+      escaped_email = escape_sql_string(email)
+      query = "select #{donor_fields.join(',')} from dp join dpudf on dp.donor_id = dpudf.donor_id where dp.email = '#{escaped_email}'"
       response = get(query)
       return [] if response.xpath('//record').empty?
 
@@ -140,7 +141,8 @@ module Donorperfect
     end
 
     def get_codes(field_name)
-      query = "select * from dpcodes where field_name = '#{field_name}'"
+      escaped_field_name = escape_sql_string(field_name)
+      query = "select * from dpcodes where field_name = '#{escaped_field_name}'"
       response = get(query)
       return [] if response.xpath('//record').empty?
 
@@ -148,7 +150,9 @@ module Donorperfect
     end
 
     def get_code(code, field_name)
-      query = "select * from dpcodes where code = '#{code}' and field_name = '#{field_name}'"
+      escaped_code = escape_sql_string(code)
+      escaped_field_name = escape_sql_string(field_name)
+      query = "select * from dpcodes where code = '#{escaped_code}' and field_name = '#{escaped_field_name}'"
       response = get(query)
       return nil if response.xpath('//record').empty?
 
@@ -174,6 +178,11 @@ module Donorperfect
     end
 
     private
+
+    def escape_sql_string(value)
+      return nil if value.nil?
+      value.to_s.gsub("'", "''")
+    end
 
     def validate_field_names(dpudf_fields, other_udf_fields = [])
       # Extract field names from DEFAULT_DP_FIELDS (remove 'dp.' prefix)
